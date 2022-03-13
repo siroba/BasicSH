@@ -1,0 +1,30 @@
+#!/bin/sh
+
+
+ if test "$#" -ne "2"
+then
+        echo "The number of arguments is not correct" >&2 #>&2 print the error to the standar error 
+        echo "USE: $0 <initial_folder> <Number_of_lines>" >&2
+        exit 1
+fi
+
+if test  "$#" -ne "3"
+then
+	echo "The files with more than $2 lines are:"
+fi
+
+for  f in "$1/"*
+do
+	if test -d "$f"
+	then 
+	$0 $f $2 "0"  # $0 is used to call our own script 
+	else
+	file="$( cat $f | wc -l)"
+		if  test "$file"  -gt "$2"
+		then 
+			echo "$f"
+		fi
+	fi
+
+done
+exit 0
