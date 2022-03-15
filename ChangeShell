@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+if test "$#" -ne "2"
+then
+	echo "The number of arguments is not correct" >&2 #>&2 print the error to the standar error 
+	echo "USE: $0 <user> <newShell>" >&2
+	exit 1
+fi
+
+var=$(cat my_passwd)
+echo "$var" | ( while  read line 
+do
+	user=$(echo $var | grep "^$1:")
+	varLineUser=$(echo $line | cut -d ':' -f 1-6)
+	#varLineShell=$(echo $line | cut -d ':' -f 7)
+
+	if echo "$line" | grep "^$1:" > /dev/null
+	then
+		echo "$varLineUser:$2" >> ./my_passwd2
+	else
+		echo "$line" >> ./my_passwd2
+	fi
+done  
+exit 0 )
